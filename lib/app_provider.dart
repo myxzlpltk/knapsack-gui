@@ -9,7 +9,14 @@ class AppProvider extends ChangeNotifier {
     compute();
   }
 
-  bool get isInputValid => _weight > 0 && _profit > 0;
+  bool get isInputValid => _name.isNotEmpty && _weight > 0 && _profit > 0;
+
+  String _name = "";
+  String get name => _name;
+  set name(String name) {
+    _name = name;
+    notifyListeners();
+  }
 
   double _weight = 0;
   double get weight => _weight;
@@ -33,16 +40,16 @@ class AppProvider extends ChangeNotifier {
   }
 
   List<Item> items = [
-    Item(40, 2),
-    Item(50, 3.14),
-    Item(100, 1.98),
-    Item(95, 5),
-    Item(30, 3),
+    Item("Item #1", 40, 2),
+    Item("Item #2", 50, 3.14),
+    Item("Item #3", 100, 1.98),
+    Item("Item #4", 95, 5),
+    Item("Item #5", 30, 3),
   ];
 
   void add() {
     if (isInputValid) {
-      items.add(Item(profit, weight));
+      items.add(Item(name, profit, weight));
       items.sort((a, b) => b.density.compareTo(a.density));
 
       compute();
@@ -146,16 +153,17 @@ class AppProvider extends ChangeNotifier {
 }
 
 class Item {
+  bool isSelected = false;
+  final String name;
   final double profit;
   final double weight;
-  bool isSelected = false;
 
-  Item(this.profit, this.weight);
+  Item(this.name, this.profit, this.weight);
 
   double get density => profit / weight;
 
   @override
-  String toString() => "Item(profit: $profit, weight: $weight)";
+  String toString() => "Item(name: $name, profit: $profit, weight: $weight)";
 }
 
 class Node {

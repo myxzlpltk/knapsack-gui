@@ -8,6 +8,7 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController();
     TextEditingController weightController = TextEditingController();
     TextEditingController profitController = TextEditingController();
 
@@ -93,6 +94,35 @@ class DashboardPage extends StatelessWidget {
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: nameController,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              style: GoogleFonts.spaceMono(fontSize: 14),
+                              decoration: InputDecoration(
+                                labelStyle: GoogleFonts.spaceMono(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                labelText: "Nama",
+                              ),
+                              onChanged: (value) {
+                                if (value.isEmpty) {
+                                  Provider.of<AppProvider>(context,
+                                      listen: false)
+                                      .name = "";
+                                  return;
+                                }
+
+                                try {
+                                  Provider.of<AppProvider>(context,
+                                      listen: false)
+                                      .name = value;
+                                } catch (e) {
+                                  // do nothing
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16),TextFormField(
                               controller: weightController,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -107,14 +137,14 @@ class DashboardPage extends StatelessWidget {
                               onChanged: (value) {
                                 if (value.isEmpty) {
                                   Provider.of<AppProvider>(context,
-                                          listen: false)
+                                      listen: false)
                                       .weight = 0;
                                   return;
                                 }
 
                                 try {
                                   Provider.of<AppProvider>(context,
-                                          listen: false)
+                                      listen: false)
                                       .weight = double.parse(value);
                                 } catch (e) {
                                   // do nothing
@@ -209,7 +239,6 @@ class DashboardPage extends StatelessWidget {
                             children: List.generate(
                               state.items.length,
                               (i) => ItemCard(
-                                index: i + 1,
                                 item: state.items[i],
                                 onTap: () {
                                   state.delete(i);
@@ -233,12 +262,10 @@ class DashboardPage extends StatelessWidget {
 
 class ItemCard extends StatelessWidget {
   final Item item;
-  final int index;
   final void Function()? onTap;
 
   const ItemCard({
     Key? key,
-    required this.index,
     required this.item,
     this.onTap,
   }) : super(key: key);
@@ -255,7 +282,7 @@ class ItemCard extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "#$index",
+              item.name,
               textAlign: TextAlign.center,
               style: GoogleFonts.spaceMono(
                 fontSize: 16,
