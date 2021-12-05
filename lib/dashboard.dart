@@ -108,21 +108,22 @@ class DashboardPage extends StatelessWidget {
                               onChanged: (value) {
                                 if (value.isEmpty) {
                                   Provider.of<AppProvider>(context,
-                                      listen: false)
+                                          listen: false)
                                       .name = "";
                                   return;
                                 }
 
                                 try {
                                   Provider.of<AppProvider>(context,
-                                      listen: false)
+                                          listen: false)
                                       .name = value;
                                 } catch (e) {
                                   // do nothing
                                 }
                               },
                             ),
-                            const SizedBox(height: 16),TextFormField(
+                            const SizedBox(height: 16),
+                            TextFormField(
                               controller: weightController,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -137,14 +138,14 @@ class DashboardPage extends StatelessWidget {
                               onChanged: (value) {
                                 if (value.isEmpty) {
                                   Provider.of<AppProvider>(context,
-                                      listen: false)
+                                          listen: false)
                                       .weight = 0;
                                   return;
                                 }
 
                                 try {
                                   Provider.of<AppProvider>(context,
-                                      listen: false)
+                                          listen: false)
                                       .weight = double.parse(value);
                                 } catch (e) {
                                   // do nothing
@@ -195,6 +196,7 @@ class DashboardPage extends StatelessWidget {
                                     ElevatedButton(
                                   onPressed: state.isInputValid
                                       ? () {
+                                          nameController.text = "";
                                           weightController.text = "";
                                           profitController.text = "";
                                           Provider.of<AppProvider>(context,
