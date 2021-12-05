@@ -64,7 +64,7 @@ class AppProvider extends ChangeNotifier {
 
   Timer? _debounce;
   void compute() {
-    if(_debounce != null && _debounce!.isActive) _debounce!.cancel();
+    if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
       Node result = knapsack(maxWeight, items);
@@ -126,17 +126,19 @@ class AppProvider extends ChangeNotifier {
         if (v1.totalProfit > maxNode.totalProfit) {
           maxNode = v1;
         }
+
+        if (u.level < items.length - 2) {
+          // Tidak mengambil node
+          v2 = Node(
+            level: u.level + 1,
+            totalWeight: u.totalWeight,
+            totalProfit: u.totalProfit,
+            parent: u,
+          );
+
+          queue.addLast(v2);
+        }
       }
-
-      // Tidak mengambil node
-      v2 = Node(
-        level: u.level + 1,
-        totalWeight: u.totalWeight,
-        totalProfit: u.totalProfit,
-        parent: u,
-      );
-
-      queue.addLast(v2);
     }
 
     return maxNode;
