@@ -44,7 +44,12 @@ class AppProvider extends ChangeNotifier {
     if (isInputValid) {
       items.add(Item(profit, weight));
       items.sort((a, b) => b.density.compareTo(a.density));
+
       compute();
+
+      _profit = 0;
+      _weight = 0;
+
       notifyListeners();
     }
   }
