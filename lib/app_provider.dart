@@ -5,7 +5,85 @@ import 'package:flutter/material.dart';
 
 class AppProvider extends ChangeNotifier {
   AppProvider() {
-    items.sort((a, b) => b.density.compareTo(a.density));
+    int index = 7;
+    switch (index) {
+      case 1:
+        _maxWeight = 1500;
+        items = [
+          Item("Jambu", 11500, 600),
+          Item("Kiwi", 18000, 500),
+          Item("Lemon", 6000, 450),
+          Item("Buah Naga", 6200, 400),
+          Item("Apel", 6900, 200),
+        ];
+        break;
+      case 2:
+        _maxWeight = 1750;
+        items = [
+          Item("Delima", 5500, 800),
+          Item("Salak", 20000, 850),
+          Item("Buah Naga", 6200, 400),
+          Item("Srikaya", 3500, 500),
+          Item("Markisa", 5000, 600),
+        ];
+        break;
+      case 3:
+        _maxWeight = 1600;
+        items = [
+          Item("Salak", 20000, 850),
+          Item("Delima", 5500, 800),
+          Item("Buah Naga", 6200, 400),
+          Item("Nanas", 8000, 800),
+          Item("Mangga", 10000, 750),
+          Item("Blimbing", 6200, 400),
+        ];
+        break;
+      case 4:
+        _maxWeight = 1400;
+        items = [
+          Item("Buah Naga", 6200, 400),
+          Item("Anggur", 8000, 100),
+          Item("Pisang", 12000, 700),
+          Item("Kurma", 12000, 800),
+          Item("Jeruk", 3800, 250),
+          Item("Kelengkeng", 13300, 750),
+        ];
+        break;
+      case 5:
+        _maxWeight = 2000;
+        items = [
+          Item("Blimbing", 6200, 400),
+          Item("Strawberry", 14500, 500),
+          Item("Jambu", 11500, 600),
+          Item("Anggur", 8000, 100),
+          Item("Salak", 20000, 850),
+          Item("Nanas", 8000, 800),
+        ];
+        break;
+      case 6:
+        _maxWeight = 1000;
+        items = [
+          Item("Jambu", 11500, 600),
+          Item("Kurma", 12000, 800),
+          Item("Nanas", 8000, 800),
+          Item("Apel", 6900, 200),
+        ];
+        break;
+      case 7:
+        _maxWeight = 1500;
+        items = [
+          Item("Blimbing", 6200, 400),
+          Item("Rambutan", 8900, 500),
+          Item("Kurma", 12000, 800),
+          Item("Jeruk", 3800, 250),
+        ];
+        break;
+      default:
+        _maxWeight = 0;
+        items = [];
+        break;
+    }
+
     compute();
   }
 
@@ -32,25 +110,18 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  double _maxWeight = 10;
+  late double _maxWeight;
   double get maxWeight => _maxWeight;
   set maxWeight(double maxWeight) {
     _maxWeight = maxWeight;
     compute();
   }
 
-  List<Item> items = [
-    Item("Item #1", 40, 2),
-    Item("Item #2", 50, 3.14),
-    Item("Item #3", 100, 1.98),
-    Item("Item #4", 95, 5),
-    Item("Item #5", 30, 3),
-  ];
+  late List<Item> items;
 
   void add() {
     if (isInputValid) {
       items.add(Item(name, profit, weight));
-      items.sort((a, b) => b.density.compareTo(a.density));
 
       compute();
 
@@ -133,18 +204,18 @@ class AppProvider extends ChangeNotifier {
         if (v1.totalProfit > maxNode.totalProfit) {
           maxNode = v1;
         }
+      }
 
-        if (u.level < items.length - 2) {
-          // Tidak mengambil node
-          v2 = Node(
-            level: u.level + 1,
-            totalWeight: u.totalWeight,
-            totalProfit: u.totalProfit,
-            parent: u,
-          );
+      if (u.level < items.length - 2) {
+        // Tidak mengambil node
+        v2 = Node(
+          level: u.level + 1,
+          totalWeight: u.totalWeight,
+          totalProfit: u.totalProfit,
+          parent: u,
+        );
 
-          queue.addLast(v2);
-        }
+        queue.addLast(v2);
       }
     }
 
