@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class AppProvider extends ChangeNotifier {
   AppProvider() {
-    int index = 7;
+    int index = 1;
     switch (index) {
       case 1:
         _maxWeight = 1500;
@@ -156,6 +156,7 @@ class AppProvider extends ChangeNotifier {
       while (temp != null) {
         if (temp.level >= 0) {
           items[temp.level].isSelected = temp.status;
+          print(temp);
         }
 
         temp = temp.parent;
@@ -183,39 +184,41 @@ class AppProvider extends ChangeNotifier {
       u = queue.removeFirst();
 
       // Jika tidak punya cabang maka skip
-      if (u.level == items.length - 1) {
-        continue;
-      }
-
-      // Ambil node
-      v1 = Node(
-        level: u.level + 1,
-        totalWeight: u.totalWeight + items[u.level + 1].weight,
-        totalProfit: u.totalProfit + items[u.level + 1].profit,
-        parent: u,
-        status: true,
-      );
-
-      // Jika profit baru kurang dari W dan profit lebih besar dari sebelumnya
-      // Update profit
-      if (v1.totalWeight <= maxWeight) {
-        queue.addLast(v1);
-
-        if (v1.totalProfit > maxNode.totalProfit) {
-          maxNode = v1;
-        }
-      }
-
-      if (u.level < items.length - 2) {
-        // Tidak mengambil node
-        v2 = Node(
+      if (u.level < items.length - 1) {
+        // Ambil node
+        v1 = Node(
           level: u.level + 1,
-          totalWeight: u.totalWeight,
-          totalProfit: u.totalProfit,
+          totalWeight: u.totalWeight + items[u.level + 1].weight,
+          totalProfit: u.totalProfit + items[u.level + 1].profit,
           parent: u,
+          status: true,
         );
 
-        queue.addLast(v2);
+        // Jika profit baru kurang dari W dan profit lebih besar dari sebelumnya
+        // Update profit
+        if (v1.totalWeight <= maxWeight) {
+          queue.addLast(v1);
+
+          if (v1.totalProfit >= maxNode.totalProfit) {
+            maxNode = v1;
+          }
+        }
+
+        if (u.level < items.length - 2) {
+          // Tidak mengambil node
+          v2 = Node(
+            level: u.level + 1,
+            totalWeight: u.totalWeight,
+            totalProfit: u.totalProfit,
+            parent: u,
+          );
+
+          queue.addLast(v2);
+
+          if (v2.totalProfit >= maxNode.totalProfit) {
+            maxNode = v2;
+          }
+        }
       }
     }
 
